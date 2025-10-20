@@ -51,10 +51,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 # Fungsi saat tombol "Cari Partner" ditekan
+# Fungsi saat tombol "Cari Partner" ditekan
 async def find_partner(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()  # Memberitahu Telegram bahwa tombol sudah diproses
-    user_id = query.effective_user.id
+    
+    # INI ADALAH BARIS YANG DIPERBAIKI:
+    user_id = query.from_user.id 
 
     # Inisialisasi jika belum ada (safety check)
     context.bot_data.setdefault('queue', [])
@@ -89,7 +92,6 @@ async def find_partner(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Masukkan ke antrian
         context.bot_data['queue'].append(user_id)
         await query.edit_message_text("Sedang mencari partner... Mohon tunggu. ⏳")
-
 # Fungsi untuk /stop
 async def stop_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -161,4 +163,5 @@ def main():
     application.run_polling()
 
 if __name__ == "__main__":
+
     main()
